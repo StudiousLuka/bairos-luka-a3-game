@@ -117,10 +117,19 @@ namespace MohawkGame2D
             {
                 Position += Velocity * Time.DeltaTime; // Move enemies according to their velocity
 
+                // Enemy collision - Make enemies bounce off the window edges
+                if (Position.X - Size / 2 < 0 || Position.X + Size / 2 > 800) // Bounce enemies horizontally
+                {
+                    Velocity.X *= -1; // Cause horizontal bounce
+                }
+
+                if (Position.Y - Size / 2 < 0 || Position.Y + Size / 2 > 600) // Bounces enemies vertically
+                {
+                    Velocity.Y *= -1; // Cause vertical bounce
+                }
+
                 Draw.FillColor = Color.Magenta; // Make enemies magenta
                 Draw.Square(Position, Size); // Make enemies squares according to their position and size
-
-                
 
             }
 
@@ -133,10 +142,10 @@ namespace MohawkGame2D
             int windowEdge = Random.Integer(0, 4); // Randomly picks between the four sides of the screen to spawn enemies
             Vector2 spawnPoint = new Vector2(0, 0); // Initialize enemy spawn point
 
-            if (windowEdge == 0) spawnPoint = new Vector2(Random.Float(0, 800), -enemySize); // Spawn enemies at the top
-            if (windowEdge == 1) spawnPoint = new Vector2(Random.Float(0, 800), 600 + enemySize); // Spawn enemies at the bottom
-            if (windowEdge == 2) spawnPoint = new Vector2(-enemySize, Random.Float(0, 600)); // Spawn enemies from the left
-            if (windowEdge == 3) spawnPoint = new Vector2(800 + enemySize, Random.Float(0, 600)); // Spawn enemies from the right
+            if (windowEdge == 0) spawnPoint = new Vector2(Random.Float(0, 800), enemySize); // Spawn enemies at the top
+            if (windowEdge == 1) spawnPoint = new Vector2(Random.Float(0, 800), 600 - enemySize); // Spawn enemies at the bottom
+            if (windowEdge == 2) spawnPoint = new Vector2(enemySize, Random.Float(0 + enemySize, 600)); // Spawn enemies from the left
+            if (windowEdge == 3) spawnPoint = new Vector2(800 - enemySize, Random.Float(0 + enemySize, 600)); // Spawn enemies from the right
 
             Vector2 enemyDirection = Random.Direction(); // Make enemies move in a random direction
 
