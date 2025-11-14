@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8 d17.14
+VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAME 10003 Game Development Foundations - 2D Game Template (v1.4)1", "GAME 10003 Game Development Foundations - 2D Game Template (v1.4)1.csproj", "{F6DDD7D4-6019-44D9-B44B-CF6B263EEA25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bairos-luka-a3-game", "bairos-luka-a3-game.csproj", "{F6DDD7D4-6019-44D9-B44B-CF6B263EEA25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -78,11 +78,11 @@ namespace MohawkGame2D
                 {
                     enemies[i].Update(); // Draw and move each enemy
 
-                    float distanceX = Math.Abs(playerPosition.X - enemies[i].Position.X);
-                    float distanceY = Math.Abs(playerPosition.Y - enemies[i].Position.Y);
-                    float combinedSize = (playerSize + enemies[i].Size) / 2;
+                    float distanceX = Math.Abs(playerPosition.X - enemies[i].Position.X); // Calculate horizontal distance between the player and enemies
+                    float distanceY = Math.Abs(playerPosition.Y - enemies[i].Position.Y); // Calculate vertical distance between the player and enemies
+                    float combinedSize = (playerSize + enemies[i].Size) / 2; // Calculate distance when a player-enemy collision occurs
 
-                    if (distanceX < combinedSize && distanceY < combinedSize)
+                    if (distanceX < combinedSize && distanceY < combinedSize) // If the player is touching an enemy, cause a Game Over
                     {
                         gameOver = true;
                     }
@@ -118,7 +118,7 @@ namespace MohawkGame2D
                 Position += Velocity * Time.DeltaTime; // Move enemies according to their velocity
 
                 // Enemy collision - Make enemies bounce off the window edges
-                if (Position.X - Size / 2 < 0 || Position.X + Size / 2 > 800) // Bounce enemies horizontally
+                if (Position.X - Size / 2 < 0) // Bounce enemies horizontally
                 {
                     Velocity.X *= -1; // Cause horizontal bounce
                 }
