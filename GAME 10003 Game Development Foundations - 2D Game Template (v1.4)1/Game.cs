@@ -1,6 +1,7 @@
 ﻿// Include the namespaces (code libraries) you need below.
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Numerics;
 
 // The namespace your code is in.
@@ -26,6 +27,9 @@ namespace MohawkGame2D
         float enemyCooldown = 1f; // How long before a new enemy can spawn
         float enemyTimer = 0f; // When a new enemy will spawn (Works in tandem with enemyCooldown)
 
+        // Game over check
+        bool gameOver = false;
+
         /// <summary>
         ///     Setup runs once before the game loop begins.
         /// </summary>
@@ -43,34 +47,56 @@ namespace MohawkGame2D
             // Set window background
             Window.ClearBackground(Color.Black);
 
-            // Movement input
-            float moveX = Input.GetAxis(KeyboardInput.Left, KeyboardInput.Right); // Left and Right keys move the player respectively
-            float moveY = Input.GetAxis(KeyboardInput.Up, KeyboardInput.Down); // Up and Down keys move the player respectively
-
-            Vector2 movement = new Vector2(moveX, moveY); // Create a vector for player movement
-            playerPosition += movement * playerSpeed * Time.DeltaTime; // Update the player's position based on input
-
-            // Player collision - Prevent the player from moving off the...
-            if (playerPosition.X < 0) playerPosition.X = 0; // ...left edge of the window
-            if (playerPosition.X > 800 - playerSize) playerPosition.X = 800 - playerSize; // ...right edge of the window
-            if (playerPosition.Y < 0) playerPosition.Y = 0; // ...top edge of the window
-            if (playerPosition.Y > 600 - playerSize) playerPosition.Y = 600 - playerSize; // ...bottom edge of the window
-
-            // Draw player
-            Draw.FillColor = Color.Cyan; // Make the player cyan
-            Draw.Square(playerPosition, playerSize); // Make the player a square according to their position and size
-
-            // Draw enemies
-            enemyTimer -= Time.DeltaTime; // Decrease the enemy timer per frame
-            if (enemyTimer <= 0f) // When the timer reaches 0, spawn a new enemy
+            if (!gameOver) // Make the game only play if the Game is not Over
             {
-                SpawnEnemy(); // Call function to spawn an enemy
-                enemyTimer = enemyCooldown; // Reset the enemy spawn timer
+                // Movement input
+                float moveX = Input.GetAxis(KeyboardInput.Left, KeyboardInput.Right); // Left and Right keys move the player respectively
+                float moveY = Input.GetAxis(KeyboardInput.Up, KeyboardInput.Down); // Up and Down keys move the player respectively
+
+                Vector2 movement = new Vector2(moveX, moveY); // Create a vector for player movement
+                playerPosition += movement * playerSpeed * Time.DeltaTime; // Update the player's position based on input
+
+                // Player collision - Prevent the player from moving off the...
+                if (playerPosition.X < 0) playerPosition.X = 0; // ...left edge of the window
+                if (playerPosition.X > 800 - playerSize) playerPosition.X = 800 - playerSize; // ...right edge of the window
+                if (playerPosition.Y < 0) playerPosition.Y = 0; // ...top edge of the window
+                if (playerPosition.Y > 600 - playerSize) playerPosition.Y = 600 - playerSize; // ...bottom edge of the window
+
+                // Draw player
+                Draw.FillColor = Color.Cyan; // Make the player cyan
+                Draw.Square(playerPosition, playerSize); // Make the player a square according to their position and size
+
+                // Draw enemies
+                enemyTimer -= Time.DeltaTime; // Decrease the enemy timer per frame
+                if (enemyTimer <= 0f) // When the timer reaches 0, spawn a new enemy
+                {
+                    SpawnEnemy(); // Call function to spawn an enemy
+                    enemyTimer = enemyCooldown; // Reset the enemy spawn timer
+                }
+
+                for (int i = 0; i < enemyCount; i++) // Update each enemy that spawns
+                {
+                    enemies[i].Update(); // Draw and move each enemy
+
+                    float distanceX = Math.Abs(playerPosition.X - enemies[i].Position.X);
+                    float distanceY = Math.Abs(playerPosition.Y - enemies[i].Position.Y);
+                    float combinedSize = (playerSize + enemies[i].Size) / 2;
+
+                    if (distanceX < combinedSize && distanceY < combinedSize)
+                    {
+                        gameOver = true;
+                    }
+                }
+
+
             }
 
-            for (int i = 0; i < enemyCount; i++) // Update each enemy that spawns
+            // Game Over screen
+            if (gameOver)
             {
-                enemies[i].Update(); // Draw and move each enemy
+                Text.Color = Color.Magenta; // Make "GAME OVER" text magenta
+                Text.Size = 112; // Set "GAME OVER" text size
+                Text.Draw("GAME OVER", 150f, 250f); // Write "GAME OVER" and set text position
             }
         }
 
@@ -87,12 +113,15 @@ namespace MohawkGame2D
                 Size = size;
             }
 
-            public void Update() // Enemy specific updates before they spawn
+            public void Update() // Enemy specific updates
             {
                 Position += Velocity * Time.DeltaTime; // Move enemies according to their velocity
 
                 Draw.FillColor = Color.Magenta; // Make enemies magenta
                 Draw.Square(Position, Size); // Make enemies squares according to their position and size
+
+                
+
             }
 
         }
