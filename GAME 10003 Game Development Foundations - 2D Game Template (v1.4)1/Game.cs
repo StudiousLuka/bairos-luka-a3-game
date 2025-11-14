@@ -18,7 +18,8 @@ namespace MohawkGame2D
         /// </summary>
         public void Setup()
         {
-
+            Window.SetTitle("Just Shapes Jr."); // Sets the window title
+            Window.SetSize(800, 600); // Sets the window size (currently maximum)
         }
 
         /// <summary>
