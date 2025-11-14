@@ -50,6 +50,12 @@ namespace MohawkGame2D
             Vector2 movement = new Vector2(moveX, moveY); // Create a vector for player movement
             playerPosition += movement * playerSpeed * Time.DeltaTime; // Update the player's position based on input
 
+            // Player collision - Prevent the player from moving off the...
+            if (playerPosition.X < 0) playerPosition.X = 0; // ...left edge of the window
+            if (playerPosition.X > 800 - playerSize) playerPosition.X = 800 - playerSize; // ...right edge of the window
+            if (playerPosition.Y < 0) playerPosition.Y = 0; // ...top edge of the window
+            if (playerPosition.Y > 600 - playerSize) playerPosition.Y = 600 - playerSize; // ...bottom edge of the window
+
             // Draw player
             Draw.FillColor = Color.Cyan; // Make the player cyan
             Draw.Square(playerPosition, playerSize); // Make the player a square according to their position and size
